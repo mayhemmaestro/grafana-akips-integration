@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81.9 71.52">
+    <defs>
+        <linearGradient id="bgGradient" x1="0" y1="0" x2="81.9" y2="71.52"
+            gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#021B11" />
+            <stop offset="1" stop-color="#0A5F3C" />
+        </linearGradient>
+
+        <linearGradient id="lineGradient" x1="0" y1="35.76" x2="81.9" y2="35.76"
+            gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#3CFF8F" />
+            <stop offset="1" stop-color="#6BFFB0" />
+        </linearGradient>
+
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="0.8" result="blur" />
+            <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- Rounded background -->
+    <rect width="81.9" height="71.52" rx="8" fill="url(#bgGradient)" />
+
+    <!-- Subtle grid -->
+    <g opacity="0.08" stroke="#9CFFCB" stroke-width="0.4">
+        <path d="M13.65 0V71.52" />
+        <path d="M27.3 0V71.52" />
+        <path d="M40.95 0V71.52" />
+        <path d="M54.6 0V71.52" />
+        <path d="M68.25 0V71.52" />
+
+        <path d="M0 11.92H81.9" />
+        <path d="M0 23.84H81.9" />
+        <path d="M0 35.76H81.9" />
+        <path d="M0 47.68H81.9" />
+        <path d="M0 59.6H81.9" />
+    </g>
+
+    <!-- Timeseries line -->
+    <path
+        d="M0 50
+       L8 46
+       L14 38
+       L20 42
+       L28 30
+       L36 36
+       L44 48
+       L52 40
+       L60 24
+       L68 30
+       L75 16
+       L81.9 22"
+        fill="none"
+        stroke="url(#lineGradient)"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        filter="url(#glow)"
+        opacity="0.95"
+    />
+
+    <!-- White A -->
+    <path
+        d="M40.95 12
+       L58 58
+       H50.8
+       L46.8 47
+       H35.1
+       L31.1 58
+       H23.9
+       L40.95 12 Z
+
+       M37.4 40.5
+       H44.5
+       L40.95 30
+       L37.4 40.5 Z"
+        fill="#FFFFFF"
+    />
+</svg>
