@@ -48,5 +48,5 @@ ci/
 # Claude Code local settings
 .claude/settings.local.json
 
-grafana-akips-integration
-grafana-akips-integration-*.zip
+mayhemmaestro-akips-integration
+mayhemmaestro-akips-integration-*.zip

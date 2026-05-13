@@ -50,7 +50,7 @@ func TestCredentialsAreSentAsQueryParams(t *testing.T) {
 
 	ds := newTestDatasource(server.URL, server.Client())
 	q := newDataQuery(t, queryModel{QueryText: "mget * * sysName", APIEndpoint: "api-db"})
-	ds.QueryData(context.Background(), &backend.QueryDataRequest{Queries: []backend.DataQuery{q}})
+	_, _ = ds.QueryData(context.Background(), &backend.QueryDataRequest{Queries: []backend.DataQuery{q}})
 }
 
 func TestInterpolateVariables(t *testing.T) {
@@ -78,7 +78,7 @@ func TestQueryTimeSeries(t *testing.T) {
 	body := "router01 sys sysUpTime = 100,200,300\n"
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(body))
+		_, _ = w.Write([]byte(body))
 	}))
 	defer server.Close()
 
@@ -109,7 +109,7 @@ func TestQueryTable(t *testing.T) {
 	body := "router01 sys sysName = Hostname01\nrouter02 sys sysName = Hostname02\n"
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(body))
+		_, _ = w.Write([]byte(body))
 	}))
 	defer server.Close()
 
@@ -141,7 +141,7 @@ func TestQueryCSV(t *testing.T) {
 	body := "10,20,30\n40,50,60\n"
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(body))
+		_, _ = w.Write([]byte(body))
 	}))
 	defer server.Close()
 
@@ -187,7 +187,7 @@ func TestCheckHealthSuccess(t *testing.T) {
 			t.Errorf("expected username=admin&password=secret, got %s/%s", r.URL.Query().Get("username"), r.URL.Query().Get("password"))
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("router01 sys sysName\n"))
+		_, _ = w.Write([]byte("router01 sys sysName\n"))
 	}))
 	defer server.Close()
 

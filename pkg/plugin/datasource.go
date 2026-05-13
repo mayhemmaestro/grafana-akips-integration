@@ -145,7 +145,7 @@ func (d *Datasource) doAKIPS(ctx context.Context, endpoint, cmd string) ([]byte,
 	if err != nil {
 		return nil, fmt.Errorf("connect to AKIPS: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode/100 != 2 {
 		body, _ := io.ReadAll(resp.Body)
@@ -461,12 +461,12 @@ func processTable(r akips.GenericResponse, q *queryContext, meta *data.FrameMeta
 	for i, line := range r {
 		var offset int
 		if !q.model.OmitParents {
-			builder.Set(0, i, line.Parent)
-			builder.Set(1, i, line.Child)
-			builder.Set(2, i, line.Attribute)
+			_ = builder.Set(0, i, line.Parent)
+			_ = builder.Set(1, i, line.Child)
+			_ = builder.Set(2, i, line.Attribute)
 			offset = 3
 		} else {
-			builder.Set(0, i, fieldName(line))
+			_ = builder.Set(0, i, fieldName(line))
 			offset = 1
 		}
 		for fi, v := range line.Values {
@@ -474,7 +474,7 @@ func processTable(r akips.GenericResponse, q *queryContext, meta *data.FrameMeta
 			if v != "" {
 				val = v
 			}
-			builder.Set(fi+offset, i, val)
+			_ = builder.Set(fi+offset, i, val)
 		}
 	}
 
@@ -525,7 +525,7 @@ func processCSV(r akips.CSVResponse, q *queryContext, meta *data.FrameMeta) back
 			if v != "" {
 				val = v
 			}
-			builder.Set(fi, i, val)
+			_ = builder.Set(fi, i, val)
 		}
 	}
 
@@ -573,7 +573,7 @@ func (d *Datasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRe
 			Message: "AKIPS connection failed: " + err.Error(),
 		}, nil
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// 4. Validate Response Status
 	if resp.StatusCode != http.StatusOK {
