@@ -11,6 +11,12 @@ A Grafana data source plugin for querying [AKIPS](https://www.akips.com/) networ
 - Template variables: `$__timeFrom`, `$__timeTo`, `$__timeInterval`, `$__device`, `$__child`, `$__attribute`
 - Supports both `api-db` and `api-msg` endpoints
 
+## Screenshots
+
+![Query editor](src/img/query-screenshot.png)
+
+![Data source configuration](src/img/config-screenshot.png)
+
 ## Requirements
 
 - Grafana ≥ 12.3.0
