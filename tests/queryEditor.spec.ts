@@ -1,28 +1,33 @@
 import { test, expect } from '@grafana/plugin-e2e';
 
-test('smoke: should render query editor', async ({ panelEditPage, readProvisionedDataSource }) => {
+test('smoke: should render query editor controls', async ({ panelEditPage, readProvisionedDataSource }) => {
   const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
   await panelEditPage.datasource.set(ds.name);
-  await expect(panelEditPage.getQueryEditorRow('A').getByRole('textbox', { name: 'Query Text' })).toBeVisible();
+
+  const row = panelEditPage.getQueryEditorRow('A');
+  // InlineField label text is visible
+  await expect(row.getByText('API Endpoint', { exact: true })).toBeVisible();
+  // AKIPS Query input is a standard Input with id that gets associated to its InlineField label
+  await expect(row.getByRole('textbox', { name: 'AKIPS Query' })).toBeVisible();
 });
 
-test('should trigger new query when Constant field is changed', async ({
-  panelEditPage,
-  readProvisionedDataSource,
-}) => {
+test('should render query type options', async ({ panelEditPage, readProvisionedDataSource }) => {
   const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
   await panelEditPage.datasource.set(ds.name);
-  await panelEditPage.getQueryEditorRow('A').getByRole('textbox', { name: 'Query Text' }).fill('test query');
-  const queryReq = panelEditPage.waitForQueryDataRequest();
-  await panelEditPage.getQueryEditorRow('A').getByRole('spinbutton').fill('10');
-  await expect(await queryReq).toBeTruthy();
+
+  const row = panelEditPage.getQueryEditorRow('A');
+  await expect(row.getByRole('radio', { name: 'Time series' })).toBeVisible();
+  await expect(row.getByRole('radio', { name: 'Table' })).toBeVisible();
+  await expect(row.getByRole('radio', { name: 'CSV' })).toBeVisible();
 });
 
-test('data query should return values 10 and 20', async ({ panelEditPage, readProvisionedDataSource }) => {
+test('should render device, child, and attribute selectors', async ({ panelEditPage, readProvisionedDataSource }) => {
   const ds = await readProvisionedDataSource({ fileName: 'datasources.yml' });
   await panelEditPage.datasource.set(ds.name);
-  await panelEditPage.getQueryEditorRow('A').getByRole('textbox', { name: 'Query Text' }).fill('test query');
-  await panelEditPage.setVisualization('Table');
-  await expect(panelEditPage.refreshPanel()).toBeOK();
-  await expect(panelEditPage.panel.data).toContainText(['10', '20']);
+
+  const row = panelEditPage.getQueryEditorRow('A');
+  // Combobox accessible names come from placeholder when no value is set
+  await expect(row.getByPlaceholder('e.g. my-router-01')).toBeVisible();
+  await expect(row.getByPlaceholder('e.g. eth0')).toBeVisible();
+  await expect(row.getByPlaceholder('e.g. ifInOctets')).toBeVisible();
 });

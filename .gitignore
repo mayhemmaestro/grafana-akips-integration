@@ -48,5 +48,5 @@ ci/
 # Claude Code local settings
 .claude/settings.local.json
 
-mayhemmaestro-akips-integration
-mayhemmaestro-akips-integration-*.zip
+mayhemmaestro-akips-datasource
+mayhemmaestro-akips-datasource-*.zip

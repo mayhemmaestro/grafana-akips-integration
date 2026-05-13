@@ -242,6 +242,8 @@ jobs:
         with:
           # required for playwright-gh-pages
           persist-credentials: true
+      - name: Remove conflicting auth header
+        run: git config --unset-all http.https://github.com/.extraheader || true
       - name: Publish report
         uses: grafana/plugin-actions/playwright-gh-pages/deploy-report-pages@deploy-report-pages/v1.1.0
         with:

@@ -2,13 +2,13 @@ apiVersion: 1
 
 datasources:
   - name: 'grafana-akips-integration'
-    type: 'mayhemmaestro-grafanaakipsintegration-datasource'
+    type: 'mayhemmaestro-akips-datasource'
     access: proxy
     isDefault: false
     orgId: 1
     version: 1
     editable: true
     jsonData:
-      path: '/resources'
-    secureJsonData:
-      apiKey: 'api-key'
+      url: '${AKIPS_URL:}'
+      username: '${AKIPS_USERNAME:}'
+      skipTLS: false
