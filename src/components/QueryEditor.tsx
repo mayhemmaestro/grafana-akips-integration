@@ -76,7 +76,6 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
         )
         .map((item) => ({ label: item.label, value: item.value }));
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [datasource, device]
   );
 
@@ -87,7 +86,6 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
         .filter((v) => v.toLowerCase().includes(q.toLowerCase()))
         .map((v) => ({ label: v, value: v }));
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [datasource, device, child]
   );
 

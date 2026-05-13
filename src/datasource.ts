@@ -1,5 +1,6 @@
 import { DataQueryRequest, DataSourceInstanceSettings, CoreApp, ScopedVars, MetricFindValue, toDataFrame } from '@grafana/data';
 import { DataSourceWithBackend, getTemplateSrv } from '@grafana/runtime';
+import { lastValueFrom } from 'rxjs';
 
 import { MyQuery, MyDataSourceOptions, DEFAULT_QUERY } from './types';
 
@@ -64,11 +65,11 @@ export class DataSource extends DataSourceWithBackend<MyQuery, MyDataSourceOptio
       },
     ];
 
-    const response = await this.query({ targets } as DataQueryRequest<MyQuery>).toPromise();
+    const response = await lastValueFrom(this.query({ targets } as DataQueryRequest<MyQuery>));
     if (response?.data?.length) {
       const df = toDataFrame(response.data[0]);
       if (df.fields.length && df.fields[0].type === 'string') {
-        return df.fields[0].values.toArray().map((v: string) => ({ text: v }));
+        return (df.fields[0].values as string[]).map((v) => ({ text: v }));
       }
     }
     return [];

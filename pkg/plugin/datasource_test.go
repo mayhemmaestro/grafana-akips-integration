@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
@@ -38,11 +39,14 @@ func newDataQuery(t *testing.T, model queryModel) backend.DataQuery {
 
 func TestCredentialsAreSentAsQueryParams(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("username") != "admin" {
-			t.Errorf("expected username=admin, got %q", r.URL.Query().Get("username"))
+		// AKIPS uses semicolons as query param separators, so url.Query() won't parse them.
+		// Check the raw query string directly.
+		raw := r.URL.RawQuery
+		if !strings.Contains(raw, "username=admin") {
+			t.Errorf("expected username=admin in raw query, got %q", raw)
 		}
-		if r.URL.Query().Get("password") != "secret" {
-			t.Errorf("expected password=secret, got %q", r.URL.Query().Get("password"))
+		if !strings.Contains(raw, "password=secret") {
+			t.Errorf("expected password=secret in raw query, got %q", raw)
 		}
 		w.WriteHeader(http.StatusOK)
 	}))
