@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "Grafana-Akips-Integration",
+  "id": "mayhemmaestro-akips-datasource",
+  "metrics": true,
+  "backend": true,
+  "executable": "gpx_grafana_akips_integration",
+  "info": {
+    "description": "Query AKIPS network monitoring data directly in Grafana as time series, tables, or raw CSV.",
+    "author": {
+      "name": "Mayhem maestro"
+    },
+    "keywords": ["datasource", "akips", "network", "snmp", "monitoring"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=12.3.0",
+    "plugins": []
+  }
+}
