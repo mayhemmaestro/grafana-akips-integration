@@ -573,7 +573,7 @@ func (d *Datasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRe
 	if resp.StatusCode != http.StatusOK {
 		return &backend.CheckHealthResult{
 			Status:  backend.HealthStatusError,
-			Message: fmt.Sprintf("AKIPS returned error status: %d", resp.StatusCode),
+			Message: fmt.Sprintf("AKIPS returned error status: %s", resp.Status),
 		}, nil
 	}
 
