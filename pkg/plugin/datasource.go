@@ -560,7 +560,7 @@ func (d *Datasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRe
 			Message: "Error during client HTTP request to AKIPS endpoint",
 		}, nil
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// 4. Validate Response
 	if resp.StatusCode != http.StatusOK {
