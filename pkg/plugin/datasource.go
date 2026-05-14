@@ -545,11 +545,18 @@ func (d *Datasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRe
 	}
 
 	// 2. Prepare Request
-	url := fmt.Sprintf("%s/api-db/?username=%s;password=%s;cmds=mget+*+*+sysName", d.Settings.URL, d.Settings.Username, d.Settings.Secrets.Password)
+	url := fmt.Sprintf("%s/api-db/", d.Settings.URL)
 	httpReq, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return &backend.CheckHealthResult{Status: backend.HealthStatusError, Message: "Failed to create request"}, nil
 	}
+
+	// Set Query Params
+	hq := httpReq.URL.Query()
+	hq.Set("username", d.Settings.Username)
+	hq.Set("password", d.Settings.Secrets.Password)
+	hq.Set("cmds", "mget * * sysName")
+	httpReq.URL.RawQuery = hq.Encode()
 
 	// 3. Execute
 	resp, err := d.Client.Do(httpReq)
