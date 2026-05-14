@@ -536,8 +536,7 @@ func processCSV(r akips.CSVResponse, q *queryContext, meta *data.FrameMeta) back
 
 // CheckHealth verifies connectivity and auth against AKIPS.
 func (d *Datasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
-
-	// 1. Basic Validation
+	// 1. Validation
 	if d.Settings.URL == "" || d.Settings.Username == "" || d.Settings.Secrets.Password == "" {
 		return &backend.CheckHealthResult{
 			Status:  backend.HealthStatusError,
@@ -545,41 +544,51 @@ func (d *Datasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRe
 		}, nil
 	}
 
-	// 2. Create the Request to AKIPS
-	// We use a simple API call to verify connectivity and authentication
-	testURL := fmt.Sprintf("%s/api-db/", d.Settings.URL)
-
-	httpReq, err := http.NewRequestWithContext(ctx, http.MethodGet, testURL, nil)
+	// 2. Prepare Request
+	url := fmt.Sprintf("%s/api-db/", d.Settings.URL)
+	httpReq, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
-		return &backend.CheckHealthResult{
-			Status:  backend.HealthStatusError,
-			Message: "Failed to create request: " + err.Error(),
-		}, nil
+		return &backend.CheckHealthResult{Status: backend.HealthStatusError, Message: "Failed to create request"}, nil
 	}
 
+	// Set Query Params
 	hq := httpReq.URL.Query()
 	hq.Set("username", d.Settings.Username)
 	hq.Set("password", d.Settings.Secrets.Password)
 	hq.Set("cmds", "mget * * sysName")
 	httpReq.URL.RawQuery = hq.Encode()
 
-	// 3. Execute the Request
-	// Note: 'd.httpClient' should be initialized in your Datasource struct using httpclient.New()
-
+	// 3. Execute
 	resp, err := d.Client.Do(httpReq)
 	if err != nil {
+		// Safe error handling (no resp.StatusCode access here)
 		return &backend.CheckHealthResult{
 			Status:  backend.HealthStatusError,
-			Message: "AKIPS connection failed: " + err.Error(),
+			Message: "Error during client HTTP request to AKIPS endpoint",
 		}, nil
 	}
 	defer func() { _ = resp.Body.Close() }()
 
-	// 4. Validate Response Status
+	// 4. Validate Response
 	if resp.StatusCode != http.StatusOK {
 		return &backend.CheckHealthResult{
 			Status:  backend.HealthStatusError,
 			Message: fmt.Sprintf("AKIPS returned error status: %s", resp.Status),
+		}, nil
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return &backend.CheckHealthResult{
+			Status:  backend.HealthStatusError,
+			Message: "Failed to read response body from AKIPS",
+		}, nil
+	}
+
+	if strings.Contains(string(body), "ERROR") {
+		return &backend.CheckHealthResult{
+			Status:  backend.HealthStatusError,
+			Message: string(body),
 		}, nil
 	}
 
