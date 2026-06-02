@@ -1,4 +1,4 @@
-module github.com/mayhemmaestro/grafana-akips-integration
+module github.com/observiply/grafana-akips-integration
 
 go 1.25.7
 

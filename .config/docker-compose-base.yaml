@@ -1,7 +1,7 @@
 services:
   grafana:
     user: root
-    container_name: "mayhemmaestro-grafanaakipsintegration-datasource"
+    container_name: "observiply-grafanaakipsintegration-datasource"
 
     build:
       context: .
@@ -19,13 +19,13 @@ services:
     cap_add:
       - SYS_PTRACE
     volumes:
-      - ../dist:/var/lib/grafana/plugins/mayhemmaestro-grafanaakipsintegration-datasource
+      - ../dist:/var/lib/grafana/plugins/observiply-grafanaakipsintegration-datasource
       - ../provisioning:/etc/grafana/provisioning
-      - ..:/root/mayhemmaestro-grafanaakipsintegration-datasource
+      - ..:/root/observiply-grafanaakipsintegration-datasource
 
     environment:
       NODE_ENV: development
-      GF_LOG_FILTERS: plugin.mayhemmaestro-grafanaakipsintegration-datasource:debug
+      GF_LOG_FILTERS: plugin.observiply-grafanaakipsintegration-datasource:debug
       GF_LOG_LEVEL: debug
       GF_DATAPROXY_LOGGING: 1
-      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: mayhemmaestro-grafanaakipsintegration-datasource
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: observiply-grafanaakipsintegration-datasource

@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
-	"github.com/mayhemmaestro/grafana-akips-integration/pkg/models"
+	"github.com/observiply/grafana-akips-integration/pkg/models"
 )
 
 func newTestDatasource(serverURL string, client *http.Client) *Datasource {

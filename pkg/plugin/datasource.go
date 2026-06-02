@@ -19,8 +19,8 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
-	"github.com/mayhemmaestro/grafana-akips-integration/pkg/akips"
-	"github.com/mayhemmaestro/grafana-akips-integration/pkg/models"
+	"github.com/observiply/grafana-akips-integration/pkg/akips"
+	"github.com/observiply/grafana-akips-integration/pkg/models"
 )
 
 var (
