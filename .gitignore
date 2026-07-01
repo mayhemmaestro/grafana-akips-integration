@@ -48,5 +48,5 @@ ci/
 # Claude Code local settings
 .claude/settings.local.json
 
-observiply-akips-datasource
-observiply-akips-datasource-*.zip
+mayhemmaestro-akips-datasource
+mayhemmaestro-akips-datasource-*.zip
